@@ -1,0 +1,47 @@
+{
+  "name": "kg-backend2",
+  "version": "0.0.0",
+  "scripts": {
+    "prepareDeploy": "tsn ./scripts/prepareDeploy.ts",
+    "deploy": "build-prod && yarn prepareDeploy && gcloud app deploy ./build/deploy/app.yaml --project kg-backend2 --version 1 --quiet --verbosity info",
+    "serve": "APP_ENV=dev nodemon -e ts,js,json --exec ts-node -- --preserve-symlinks -r tsconfig-paths/register ./src/startServer.ts",
+    "startJs": "TS_NODE_PROJECT=./tsconfig.dist.json APP_ENV=dev yarn start",
+    "start": "node -r tsconfig-paths/register ./dist/startServer.js"
+  },
+  "dependencies": {
+    "@naturalcycles/js-lib": "^1.0.79",
+    "@naturalcycles/promise-lib": "^2.0.0",
+    "@types/cors": "^2.8.4",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "helmet": "^3.15.0",
+    "lru-cache": "^5.1.1",
+    "luxon": "^1.10.0",
+    "swagger-stats": "^0.95.7",
+    "tsconfig-paths": "^3.7.0"
+  },
+  "devDependencies": {
+    "@naturalcycles/shared-module": "^1.4.2",
+    "@types/cookie-parser": "^1.4.1",
+    "@types/express": "^4.16.0",
+    "@types/helmet": "^0.0.42",
+    "@types/jest": "^23.3.13",
+    "@types/node": "^10.12.18",
+    "jest": "^23.6.0",
+    "jest-junit": "^6.0.1",
+    "nodemon": "^1.18.9",
+    "prettier": "^1.16.0",
+    "ts-jest": "^23.10.5",
+    "ts-node": "^8.0.2",
+    "tslint": "^5.12.1",
+    "typescript": "^3.2.4"
+  },
+  "engines": {
+    "node": "^10.0.0"
+  },
+  "description": "",
+  "author": "Kirill Groshkov",
+  "license": "MIT"
+}

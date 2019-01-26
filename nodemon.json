@@ -1,0 +1,9 @@
+{
+  "events": {
+    "restart1": "pkill -f ts-node"
+  },
+  "ignore1": ["node_modules", "src/**/*.test.ts"],
+  "ext": "ts",
+  "exec": "ts-node ./src/startServer.ts",
+  "signal1": "SIGTERM"
+}

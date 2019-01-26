@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "lib": ["dom", "es2018"],
+    "sourceMap": true,
+    "declaration": false,
+    "outDir": "./dist",
+    "strict": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "*": ["*"],
+      "@src/*": ["src/*"]
+    },
+    "rootDir": "./src",
+    "allowSyntheticDefaultImports": false,
+    "experimentalDecorators": true
+  },
+  "include": ["src"],
+  "exclude": ["src/@linked"]
+}

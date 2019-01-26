@@ -1,0 +1,6 @@
+#
+# .gcloudignore
+#
+/.gcloudignore
+/.git
+/.gitignore
