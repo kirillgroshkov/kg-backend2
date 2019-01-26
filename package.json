@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "prepareDeploy": "tsn ./scripts/prepareDeploy.ts",
-    "deploy": "build-prod && yarn prepareDeploy && gcloud app deploy ./build/deploy/app.yaml --project kg-backend2 --version 1 --quiet --verbosity info",
+    "deploy": "build-prod && yarn prepareDeploy && gcloud app deploy ./build/deploy/app.yaml --project kg-backend2 --version 1 --quiet",
     "serve": "APP_ENV=dev nodemon -e ts,js,json --exec ts-node -- --preserve-symlinks -r tsconfig-paths/register ./src/startServer.ts",
     "startJs": "TS_NODE_PROJECT=./tsconfig.dist.json APP_ENV=dev yarn start",
     "start": "node -r tsconfig-paths/register ./dist/startServer.js"
