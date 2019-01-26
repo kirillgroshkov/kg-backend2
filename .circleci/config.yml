@@ -1,0 +1,90 @@
+#
+# validate yml:
+# circleci config validate -c .circleci/config.yml
+#
+
+version: 2
+
+#
+# Defaults
+#
+defaults: &defaults
+  docker:
+    - image: naturalcycles/ci-node:latest
+  working_directory: ~/repo
+  environment:
+    CC_TEST_REPORTER_ID: 16d16f012b65f3ddc9161380fb236188a60a403f12c71d62719f9f9605851ba8
+
+restore_cache: &restore_cache
+  key: deps-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-v1-{{ checksum "yarn.lock" }}
+
+save_cache: &save_cache
+  paths:
+    - node_modules
+  key: deps-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-v1-{{ checksum "yarn.lock" }}
+
+#
+# Jobs
+#
+jobs:
+  build-job:
+    <<: *defaults
+    docker:
+      - image: naturalcycles/ci-node-gcloud:latest
+    steps:
+      - checkout
+      - run: echo 'export GIT_MSG=`git log -1 --pretty=%B`' >> $BASH_ENV
+
+      # Yarn
+      - restore_cache: *restore_cache
+      - run: yarn --pure-lockfile
+      - save_cache: *save_cache
+
+      # Deploy
+      - run:
+          name: Deploy
+          command: |
+            yarn build-prod
+            yarn prepareDeploy
+            gcloud version
+            echo $GCP_SERVICE_ACCOUNT | gcloud auth activate-service-account --key-file=-
+            yarn deploy
+
+  test-job:
+    <<: *defaults
+    steps:
+      - checkout
+
+      # Yarn
+      - restore_cache: *restore_cache
+      - run: yarn --pure-lockfile
+
+      # Test
+      - run:
+          name: Test
+          command: |
+            cc-test-reporter before-build
+            yarn test-ci
+            cc-test-reporter after-build -t lcov ./coverage/lcov.info
+
+      # Artifacts
+      - store_test_results:
+          path: report
+      - store_artifacts:
+          path: report
+      - store_artifacts:
+          path: coverage
+
+#
+# Workflows
+#
+workflows:
+  version: 2
+
+  build-workflow:
+    jobs:
+      - build-job:
+          filters:
+            branches:
+              only: master
+      - test-job

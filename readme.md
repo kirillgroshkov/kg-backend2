@@ -2,8 +2,11 @@
 
 > Node.js backend for experiments, hosted with AppEngine
 
+![](https://circleci.com/gh/kirillgroshkov/kg-backend2.svg?style=shield&circle-token=77341500f3a17b11e8ee48350ba5032c261ffc77)
 [![](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
+[![Maintainability](https://api.codeclimate.com/v1/badges/28b1cec5da47ee3c7a6f/maintainability)](https://codeclimate.com/github/kirillgroshkov/kg-backend2/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/28b1cec5da47ee3c7a6f/test_coverage)](https://codeclimate.com/github/kirillgroshkov/kg-backend2/test_coverage)
 
 # Stack
 
