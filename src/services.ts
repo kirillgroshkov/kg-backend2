@@ -6,8 +6,10 @@
 
  */
 
+import { DatastoreService } from '@src/db/datastore/datastore.service'
 import { env } from '@src/env/env.service'
 import { FirebaseService } from '@src/firebase/firebase.service'
+import { GCPCfg } from '@src/infra/gcp/gcp.model'
 import { consoleLogFn } from '@src/log/console.log.fn'
 import { LogFunction } from '@src/log/log.model'
 import { SecretService } from '@src/secret/secret.service'
@@ -25,3 +27,7 @@ export const firebaseService = new FirebaseService({
 })
 
 export const slackService = new SlackService(env().slackCfg)
+
+const gcpServiceAccount: GCPCfg = secretService.getSecretJson('gcpServiceAccount')
+
+export const datastoreService = new DatastoreService(gcpServiceAccount)
