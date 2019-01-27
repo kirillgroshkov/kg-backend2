@@ -3,7 +3,7 @@ import { env } from '@src/env/env.service'
 import { API_RESOURCES } from '@src/server/apiResources'
 import { expressService } from '@src/server/express.service'
 import { serverService } from '@src/server/server.service'
-import { log } from '@src/services'
+import { log, slackService } from '@src/services'
 import { Application } from 'express'
 import { Server } from 'http'
 
@@ -40,6 +40,8 @@ class BootstrapService {
     await Promise.all([
       this.warmup(), // Eager evaluation (cache warmup, etc)
     ])
+
+    void slackService.send('kg-backend2 started', 'info')
   }
 
   /**

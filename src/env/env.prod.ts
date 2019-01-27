@@ -1,6 +1,7 @@
 import { secretStorageDir } from '@src/cnst/paths.cnst'
 import { SecretServiceCfg } from '@src/secret/secret.service'
 import { SentryServiceCfg } from '@src/srv/sentry/sentry.service'
+import { SlackServiceCfg } from '@src/srv/slack.service'
 
 export class EnvProd {
   name = 'prod'
@@ -23,8 +24,9 @@ export class EnvProd {
 
   authEnabled = true
 
-  slackWebhookUrl: string | undefined =
-    'https://hooks.slack.com/services/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'
+  slackCfg: SlackServiceCfg = {
+    webhookUrl: 'https://hooks.slack.com/services/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',
+  }
 
   firebaseStorageBucketName = 'test124-1621f.appspot.com'
 }

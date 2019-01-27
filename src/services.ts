@@ -12,6 +12,7 @@ import { consoleLogFn } from '@src/log/console.log.fn'
 import { LogFunction } from '@src/log/log.model'
 import { SecretService } from '@src/secret/secret.service'
 import { SentryService } from '@src/srv/sentry/sentry.service'
+import { SlackService } from '@src/srv/slack.service'
 
 export const log: LogFunction = consoleLogFn
 
@@ -22,3 +23,5 @@ export const secretService = new SecretService(env().secretCfg)
 export const firebaseService = new FirebaseService({
   serviceAccount: secretService.getSecretJson('firebaseServiceAccount'),
 })
+
+export const slackService = new SlackService(env().slackCfg)
