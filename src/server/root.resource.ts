@@ -42,6 +42,7 @@ router.get('/debug', adminMiddleware(), async (req, res) => {
   res.json({
     environment: env(),
     admin: await adminService.isAdmin(req.rc),
+    adminInfo: await adminService.getAdminInfo(req.rc),
     cookies: req.cookies,
     // env: process.env,
   })

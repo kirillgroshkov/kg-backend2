@@ -4,11 +4,11 @@ import { firebaseService, log } from '@src/services'
 const ADMIN_SET = new Set<string>(['ceo@inventix.ru'])
 
 class AdminService {
-  private isEmailAdmin (email: string): boolean {
+  isEmailAdmin (email: string): boolean {
     return ADMIN_SET.has(email)
   }
 
-  private async getEmailByToken (idToken?: string): Promise<string | undefined> {
+  async getEmailByToken (idToken?: string): Promise<string | undefined> {
     if (!idToken) return undefined
 
     try {
@@ -22,11 +22,15 @@ class AdminService {
     }
   }
 
-  private async isTokenAdmin (idToken: string): Promise<boolean> {
+  async isTokenAdmin (idToken: string): Promise<boolean> {
     const email = await this.getEmailByToken(idToken)
     if (!email) return false
 
     return this.isEmailAdmin(email)
+  }
+
+  getAdminToken (rc: RequestContext): string | undefined {
+    return rc.adminToken
   }
 
   async isAdmin (rc: RequestContext): Promise<boolean> {
