@@ -2,6 +2,8 @@ import { objectUtil } from '@naturalcycles/js-lib'
 import { bootstrapService } from '@src/bootstrap.service'
 import { timeUtil } from '@src/datetime/time.util'
 import { env } from '@src/env/env.service'
+import { adminMiddleware } from '@src/server/admin/admin.mw'
+import { adminService } from '@src/server/admin/admin.service'
 import { processUtil } from '@src/server/process.util'
 import { ReqRouter } from '@src/server/req.router'
 
@@ -34,4 +36,13 @@ router.get('/cpu', async (req, res) => {
 
 router.get('/_ah/warmup', async (req, res) => {
   res.status(200).end()
+})
+
+router.get('/debug', adminMiddleware(), async (req, res) => {
+  res.json({
+    environment: env(),
+    admin: await adminService.isAdmin(req.rc),
+    cookies: req.cookies,
+    // env: process.env,
+  })
 })

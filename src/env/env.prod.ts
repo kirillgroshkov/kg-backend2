@@ -1,3 +1,7 @@
+import { secretStorageDir } from '@src/cnst/paths.cnst'
+import { SecretServiceCfg } from '@src/secret/secret.service'
+import { SentryServiceCfg } from '@src/srv/sentry/sentry.service'
+
 export class EnvProd {
   name = 'prod'
   prod = true
@@ -7,8 +11,15 @@ export class EnvProd {
 
   swaggerStatsEnabled = true
 
-  sentryDsn: string | undefined =
-    'https://4434a43b3ce348fa90230c94f63bf0d5:e816e3e4964e4822a602d95c32599929@sentry.io/286298'
+  secretCfg: SecretServiceCfg = {
+    secretEnvName: 'PROD',
+    secretFilePath: secretStorageDir + '/secrets.prod.json',
+  }
+
+  sentryCfg: SentryServiceCfg = {
+    environment: 'prod',
+    dsn: 'https://9509d46b222c449ea669e6b8d2ab76ac@sentry.io/1380359',
+  }
 
   authEnabled = true
 

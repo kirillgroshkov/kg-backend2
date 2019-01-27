@@ -7,7 +7,9 @@ export class EnvDev extends EnvProd {
 
   swaggerStatsEnabled = false
 
-  sentryDsn = undefined
+  sentryCfg = {
+    // dsn: undefined,
+  }
 
   authEnabled = false
 }

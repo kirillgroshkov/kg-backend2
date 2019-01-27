@@ -8,7 +8,9 @@ class RequestContextService {
   }
 
   getRequestContextData (req: Request): Partial<RequestContext> {
-    return {}
+    return {
+      adminToken: req.cookies['kg_admin_token'],
+    }
   }
 }
 

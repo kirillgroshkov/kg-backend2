@@ -1,24 +1,19 @@
-interface LogFunction {
-  (...args: any[]): void
-  debug (...args: any[]): void
-  warn (...args: any[]): void
-  error (...args: any[]): void
+import { BasicLogFunction, LOG_LEVEL, LogFunction } from '@src/log/log.model'
+
+class LogService {
+  /**
+   * Mutates the function.
+   */
+  decorateBasicLogFunction (fn: BasicLogFunction): LogFunction {
+    const newFn: LogFunction = ((...args: any[]) => fn(LOG_LEVEL.INFO, ...args)) as LogFunction
+
+    return Object.assign(newFn, {
+      debug: (...args: any[]) => fn(LOG_LEVEL.DEBUG, ...args),
+      info: (...args: any[]) => fn(LOG_LEVEL.DEBUG, ...args),
+      warn: (...args: any[]) => fn(LOG_LEVEL.DEBUG, ...args),
+      error: (...args: any[]) => fn(LOG_LEVEL.DEBUG, ...args),
+    }) as LogFunction
+  }
 }
 
-const logFn: any = (...args: any[]): void => {
-  console.log(...args)
-}
-
-logFn.debug = (...args: any[]): void => {
-  console.debug(...args)
-}
-
-logFn.warn = (...args: any[]): void => {
-  console.warn(...args)
-}
-
-logFn.error = (...args: any[]): void => {
-  console.error(...args)
-}
-
-export const log: LogFunction = logFn
+export const logService = new LogService()

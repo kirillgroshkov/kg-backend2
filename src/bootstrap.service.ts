@@ -1,9 +1,9 @@
 import { memo } from '@naturalcycles/js-lib'
 import { env } from '@src/env/env.service'
-import { log } from '@src/log/log.service'
 import { API_RESOURCES } from '@src/server/apiResources'
 import { expressService } from '@src/server/express.service'
 import { serverService } from '@src/server/server.service'
+import { log } from '@src/services'
 import { Application } from 'express'
 import { Server } from 'http'
 
@@ -60,7 +60,7 @@ class BootstrapService {
     }
 
     process.on('uncaughtException', err => {
-      console.log('uncaughtException: ', err)
+      // console.log('uncaughtException: ', err)
       log.error('uncaughtException', err)
       // sentryService.captureException(err)
       if (!env().prod) {
@@ -69,7 +69,7 @@ class BootstrapService {
     })
 
     process.on('unhandledRejection', err => {
-      console.log('unhandledRejection: ', err)
+      // console.log('unhandledRejection: ', err)
       log.error('Unhandled rejection', err)
       // sentryService.captureException(err)
       if (!env().prod) {
