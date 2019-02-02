@@ -3,14 +3,19 @@ import { ErrorRequestHandler } from 'express'
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   if (!err || res.headersSent) return next(err)
-  log(`errorHandler`)
+  // log(`errorHandler`)
 
-  const msg =
-    (err.response || err.message || 'Something broke!') + ' (generic error in error.handler.ts)'
+  const msg = err.message || 'Error message not defined'
 
   // sentryService.captureException(err) // todo
 
-  res.status(500).json({
+  const statusCode = (err.data && err.data.httpStatusCode) || 500
+
+  const { path } = req
+
+  log(`HTTP ${statusCode} ${path} ${msg}`)
+
+  res.status(statusCode).json({
     err: msg,
     errStack: err.stack,
     errData: err.data,

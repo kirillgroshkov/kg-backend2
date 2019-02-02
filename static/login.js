@@ -1,4 +1,4 @@
-const cookieName = 'kg_admin_token'
+const cookieName = 'x-admin-token'
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider()
 const qs = parseQuery(location.search)
 // console.log(qs)

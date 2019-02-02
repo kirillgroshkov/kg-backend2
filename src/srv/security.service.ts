@@ -13,7 +13,21 @@ export const ALPHABET_ALPHANUMERIC = [ALPHABET_NUMBER, ALPHABET_LOWERCASE, ALPHA
   '',
 )
 
+const SALT = 'd7rG%2_)'
+
 class SecurityService {
+  hashPassword (pwPlain: string): string {
+    return this.md5(pwPlain + SALT)
+  }
+
+  /**
+   * True means match.
+   */
+  async comparePassword (pwPlain: string, pwHash: string): Promise<boolean> {
+    const correctHash = this.hashPassword(pwPlain)
+    return correctHash === pwHash
+  }
+
   md5 (s: string): string {
     return crypto
       .createHash('md5')

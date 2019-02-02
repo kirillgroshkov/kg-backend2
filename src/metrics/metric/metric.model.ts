@@ -1,4 +1,9 @@
-import { objectSchema, stringSchema, unixTimestampSchema } from '@naturalcycles/nodejs-lib'
+import {
+  idSchema,
+  objectSchema,
+  stringSchema,
+  unixTimestampSchema,
+} from '@naturalcycles/nodejs-lib'
 import { BaseDBEntity } from '@src/db/datastore/datastore.model'
 
 export interface MetricBM extends BaseDBEntity {
@@ -6,16 +11,16 @@ export interface MetricBM extends BaseDBEntity {
    * slug
    */
   id: string
-  orgId: string
+  accountId: string
 }
 
 export interface MetricDBM extends MetricBM {}
 
 export const metricBMSchema = objectSchema({
-  id: stringSchema,
+  id: stringSchema, // slugSchema
   created: unixTimestampSchema,
   updated: unixTimestampSchema,
-  orgId: stringSchema,
+  accountId: idSchema,
 })
 
 export const metricDBMSchema = metricBMSchema

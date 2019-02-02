@@ -37,7 +37,7 @@ export class DatastoreService {
   }
 
   async getById<T = any> (kind: string, id?: string): Promise<T | undefined> {
-    if (!id) return undefined
+    if (!id) return
 
     const key = this.key(kind, id.toString())
     const started = Date.now()

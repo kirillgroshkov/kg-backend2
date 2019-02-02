@@ -1,6 +1,9 @@
 import { RequestContext } from '@src/server/requestContext'
 import { Request } from 'express'
 
+export const X_ADMIN_TOKEN = 'x-admin-token'
+export const X_ACCOUNT_KEY = 'x-account-key'
+
 class RequestContextService {
   async fromRequest (req: Request): Promise<RequestContext> {
     const rcData = this.getRequestContextData(req)
@@ -9,7 +12,8 @@ class RequestContextService {
 
   getRequestContextData (req: Request): Partial<RequestContext> {
     return {
-      adminToken: req.cookies['kg_admin_token'],
+      adminToken: req.cookies[X_ADMIN_TOKEN],
+      accountKey: req.get(X_ACCOUNT_KEY),
     }
   }
 }

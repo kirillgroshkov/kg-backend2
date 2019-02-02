@@ -1,7 +1,7 @@
 import { memo } from '@naturalcycles/js-lib'
 import { env } from '@src/env/env.service'
 import { API_RESOURCES } from '@src/server/apiResources'
-import { expressService } from '@src/server/express.service'
+import { createApp } from '@src/server/express.app'
 import { serverService } from '@src/server/server.service'
 import { log, slackService } from '@src/services'
 import { Application } from 'express'
@@ -27,9 +27,7 @@ class BootstrapService {
 
     // 2. Start Express Server
     const port = parseInt(process.env.PORT!) || env().serverPort
-    this.app = expressService.createApp({
-      resources: API_RESOURCES,
-    })
+    this.app = createApp(API_RESOURCES)
     this.server = await serverService.startServer(this.app, port)
     this.serverStarted = Date.now()
 

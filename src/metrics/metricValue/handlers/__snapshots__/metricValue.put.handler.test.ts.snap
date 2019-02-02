@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PUT /metricvalues 1`] = `
+Object {
+  "accountId": "mockorg1",
+  "created": Any<Number>,
+  "metricId": "metric1",
+  "ts": 1529539200,
+  "updated": Any<Number>,
+  "v": 10,
+}
+`;
