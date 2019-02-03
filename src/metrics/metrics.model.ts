@@ -1,13 +1,18 @@
-export interface MetricValue {
-  /**
-   * ${metricId}_${ts}
-   */
-  id: string
+import { AccountBM, AccountFM } from '@src/metrics/account/account.model'
+import { MetricValueBM, MetricValueFM } from '@src/metrics/metricValue/metricValue.model'
 
-  orgId: string
-  metricId: string
-  ts: number
-  v: number
-  meta: any
-  url?: string
+export interface MetricsBackendResponseBM {
+  metricIds?: string[]
+
+  metricValues?: MetricValueBM[]
+
+  account?: AccountBM
+}
+
+export interface MetricsBackendResponseFM {
+  metricIds?: string[]
+
+  metricValues?: MetricValueFM[]
+
+  account?: AccountFM
 }

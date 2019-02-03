@@ -6,6 +6,7 @@
 
  */
 
+import { DatastoreMemoryService } from '@src/db/datastore/datastore.memory.service'
 import { DatastoreService } from '@src/db/datastore/datastore.service'
 import { env } from '@src/env/env.service'
 import { FirebaseService } from '@src/firebase/firebase.service'
@@ -35,7 +36,9 @@ export const slackService = new SlackService(_env.slackCfg)
 
 const gcpServiceAccount: GCPCfg = secretService.getSecretJson('gcpServiceAccount')
 
-export const datastoreService = new DatastoreService(gcpServiceAccount)
+export const datastoreService = _env.datastoreInMemory
+  ? new DatastoreMemoryService(log)
+  : new DatastoreService(gcpServiceAccount, log)
 
 export const accountDao = new AccountDao(datastoreService, _env.baseDaoCfg)
 export const metricDao = new MetricDao(datastoreService, _env.baseDaoCfg)

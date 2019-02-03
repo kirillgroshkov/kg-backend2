@@ -6,19 +6,27 @@ import {
 } from '@naturalcycles/nodejs-lib'
 import { BaseDBEntity } from '@src/db/datastore/datastore.model'
 
-export interface AccountBM extends BaseDBEntity {
+export interface AccountFM {
+  id: string
+  updated: number
   name: string
+}
+
+export interface AccountBM extends AccountFM, BaseDBEntity {
   keyHash: string
 }
 
 export interface AccountDBM extends AccountBM {}
 
-export const accountBMSchema = objectSchema({
+export const accountFMSchema = objectSchema({
   id: idSchema,
-  created: unixTimestampSchema,
   updated: unixTimestampSchema,
   name: stringSchema,
-  keyHash: stringSchema,
 })
+
+export const accountBMSchema = objectSchema({
+  created: unixTimestampSchema,
+  keyHash: stringSchema,
+}).concat(accountFMSchema)
 
 export const accountDBMSchema = accountBMSchema

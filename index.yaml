@@ -1,0 +1,11 @@
+#
+# index.yaml
+# Datastore index configuration
+#
+
+indexes:
+  - kind: MetricValue
+    properties:
+      - name: accountId
+      - name: metricId
+      - name: ts

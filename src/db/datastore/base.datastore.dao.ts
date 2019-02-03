@@ -331,6 +331,10 @@ export abstract class BaseDatastoreDao<BM = any, DBM = BM, FM = BM> {
     return this.anyArrayToDBM(entities, opt)
   }
 
+  async runProjectionQuery<T = Partial<DBM>> (q: Query): Promise<T[]> {
+    return this.datastoreService.runQuery(q)
+  }
+
   /**
    * Passes data from Datastore "as is" (as DBM)
    */

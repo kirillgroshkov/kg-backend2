@@ -1,13 +1,14 @@
 import { MetricValueInput } from '@src/metrics/metricValue/metricValue.model'
 import { metricValueResource } from '@src/metrics/metricValue/metricValue.resource'
-import { metricValueDao } from '@src/services'
+import { datastoreService, metricValueDao } from '@src/services'
 import { MOCK_ACCOUNT1_HEADERS, mockAccount1 } from '@src/test/mock/account.mock'
 import { mockDBState1 } from '@src/test/mock/db.mock'
 import { mockMetricValueInput1 } from '@src/test/mock/metricValue.mock'
 import { resourceTestService } from '@src/test/resource.test.service'
 import { CREATED_UPDATED_MATCHERS } from '@src/test/test.util'
 
-beforeAll(async () => {
+beforeEach(async () => {
+  datastoreService.reset()
   await mockDBState1()
 })
 

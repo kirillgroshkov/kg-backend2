@@ -7,7 +7,7 @@ import { memo } from '@naturalcycles/js-lib'
 import { timeUtil } from '@src/datetime/time.util'
 import { BaseDBEntity, DaoOptions, DatastoreStats } from '@src/db/datastore/datastore.model'
 import { GCPCfg } from '@src/infra/gcp/gcp.model'
-import { log } from '@src/services'
+import { LogFunction } from '@src/log/log.model'
 import { securityService } from '@src/srv/security.service'
 import { streamUtil } from '@src/util/stream.util'
 import { Observable } from 'rxjs'
@@ -20,21 +20,26 @@ import { Transform } from 'stream'
  * https://cloud.google.com/datastore/docs/datastore-api-tutorial
  */
 export class DatastoreService {
-  constructor (private gcpCfg: GCPCfg) {}
+  constructor (private gcpCfg: GCPCfg, protected log: LogFunction) {}
 
   ds (): Datastore {
     return this.createDatastore(this.gcpCfg)
   }
 
   @memo()
-  createDatastore (gcpCfg: GCPCfg): Datastore {
-    log(`DatastoreService init (${gcpCfg.project_id})...`)
+  protected createDatastore (gcpCfg: GCPCfg): Datastore {
+    this.log(`DatastoreService init (${gcpCfg.project_id})...`)
 
     return new DatastoreLib({
       projectId: gcpCfg.project_id, // needed
       credentials: gcpCfg,
     })
   }
+
+  /**
+   * Method to be used by InMemoryDB
+   */
+  reset (): void {}
 
   async getById<T = any> (kind: string, id?: string): Promise<T | undefined> {
     if (!id) return
@@ -49,7 +54,7 @@ export class DatastoreService {
     }
 
     const millis = Date.now() - started
-    log(`${kind}.getById(${id}) ${millis} ms:`, r || 'undefined')
+    this.log(`${kind}.getById(${id}) ${millis} ms:`, r || 'undefined')
     return r
   }
 
@@ -75,11 +80,11 @@ export class DatastoreService {
     let [rows] = await this.ds().runQuery(q)
 
     // const info = queryResp[1]
-    // console.log('queryResp: ', queryResp)
+    // console.this.log('queryResp: ', queryResp)
     rows = this.mapIds(rows)
 
     const millis = Date.now() - started
-    log(`${kind}.${name || 'query'} ${millis} ms: ${rows.length} results`)
+    this.log(`${kind}.${name || 'query'} ${millis} ms: ${rows.length} results`)
     return rows as any
   }
 
@@ -101,7 +106,7 @@ export class DatastoreService {
       )
     } catch (e) {
       const kind = this.getQueryKind(q)
-      log.error(e, { kind, q, name })
+      this.log.error(e, { kind, q, name })
       throw e
     }
   }
@@ -127,7 +132,7 @@ export class DatastoreService {
 
     return this.runQuery<T>(q, `findOneBy(${by}=${value})`).then(items => {
       const one = items && items.length ? items[0] : undefined
-      if (one) log(kind, 'datastore.findOneBy', one)
+      if (one) this.log(kind, 'datastore.findOneBy', one)
       return one
     })
   }
@@ -163,7 +168,7 @@ export class DatastoreService {
 
     const entities = objects.map(obj => {
       const entity = this.toDatastoreEntity(kind, obj, excludeFromIndexes)
-      log(`datastore.save ${kind}`, obj)
+      this.log(`datastore.save ${kind}`, obj)
       return entity
     })
 
@@ -171,11 +176,11 @@ export class DatastoreService {
       await this.ds().save(entities)
       const millis = Date.now() - started
       const ids = objects.map(obj => obj.id)
-      log(kind, `${kind}.save() ${millis} ms: ${ids.join(',')}`)
+      this.log(kind, `${kind}.save() ${millis} ms: ${ids.join(',')}`)
       return objects
     } catch (err) {
-      // log(`datastore.save ${kind}`, { obj, entity })
-      log.error('error in datastore.save! throwing', err)
+      // this.log(`datastore.save ${kind}`, { obj, entity })
+      this.log.error('error in datastore.save! throwing', err)
       // don't throw, because datastore SDK makes it in separate thread, so exception will be unhandled otherwise
       return Promise.reject(err)
     }
@@ -191,7 +196,7 @@ export class DatastoreService {
 
     const millis = Date.now() - started
 
-    log(`${kind}.deleteById(${id}) ${millis} ms`)
+    this.log(`${kind}.deleteById(${id}) ${millis} ms`)
   }
 
   async deleteByKeys (keys: DatastoreKey | DatastoreKey[]): Promise<void> {

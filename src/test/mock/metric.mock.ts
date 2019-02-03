@@ -12,3 +12,14 @@ export function mockMetric1 (): MetricBM {
     accountId: acc.id,
   }
 }
+
+export function mockMetric1_2 (): MetricBM {
+  const acc = mockAccount1()
+
+  return {
+    id: 'metric2',
+    created: MOCK_TS,
+    updated: MOCK_TS,
+    accountId: acc.id,
+  }
+}

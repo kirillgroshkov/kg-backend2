@@ -1,6 +1,6 @@
 import { MetricValueBM, MetricValueInput } from '@src/metrics/metricValue/metricValue.model'
 import { mockAccount1 } from '@src/test/mock/account.mock'
-import { mockMetric1 } from '@src/test/mock/metric.mock'
+import { mockMetric1, mockMetric1_2 } from '@src/test/mock/metric.mock'
 import { MOCK_TS } from '@src/test/mock/mock.cnst'
 
 export function mockMetricValue1 (): MetricValueBM {
@@ -24,5 +24,15 @@ export function mockMetricValueInput1 (): MetricValueInput {
     metricId: metric.id,
     ts: MOCK_TS,
     v: 10,
+  }
+}
+
+export function mockMetricValueInput1_2 (): MetricValueInput {
+  const metric = mockMetric1_2()
+
+  return {
+    metricId: metric.id,
+    ts: MOCK_TS + 2,
+    v: 11,
   }
 }

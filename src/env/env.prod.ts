@@ -18,6 +18,8 @@ export class EnvProd {
     secretFilePath: secretStorageDir + '/secrets.prod.json',
   }
 
+  datastoreInMemory = false
+
   sentryCfg: SentryServiceCfg = {
     environment: 'prod',
     dsn: 'https://9509d46b222c449ea669e6b8d2ab76ac@sentry.io/1380359',
