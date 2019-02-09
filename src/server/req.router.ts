@@ -1,6 +1,7 @@
 import { rcHandler } from '@src/server/handlers/rc.handler'
 import { ReqHandler } from '@src/server/server.model'
 import { RequestHandler, Router } from 'express'
+import PromiseRouter from 'express-promise-router'
 
 export type HttpMethod = 'all' | 'get' | 'post' | 'put' | 'patch' | 'delete' | 'head'
 
@@ -28,15 +29,14 @@ const POST_HANDLERS: ReqHandler[] = []
 export class ReqRouter {
   constructor (private defaultHanders: ReqHandler[] = []) {}
 
-  expressRouter = Router()
+  expressRouter = PromiseRouter()
+
   get resource (): Router {
     return this.expressRouter
   }
 
   route (method: HttpMethod, path: string, ..._handlers: ReqHandler[]): void {
-    const handlers = [...PRE_HANDLERS, ...this.defaultHanders, ..._handlers, ...POST_HANDLERS].map(
-      handler => reqCatchWrapper(handler),
-    )
+    const handlers = [...PRE_HANDLERS, ...this.defaultHanders, ..._handlers, ...POST_HANDLERS]
 
     this.expressRouter[method](path, ...(handlers as RequestHandler[]))
   }
