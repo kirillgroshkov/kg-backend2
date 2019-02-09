@@ -1,19 +1,13 @@
-import { HTTPError, HTTPErrorData } from '@src/error/http/httpError'
+import { HttpError, HttpErrorData } from '@naturalcycles/js-lib'
 
 /**
  * HTTP 400: Bad Request
  */
-export class Error400 extends HTTPError {
-  constructor (message = 'Bad Request', data?: HTTPErrorData) {
+export class Error400 extends HttpError {
+  constructor (message = 'Bad Request', data?: Partial<HttpErrorData>) {
     super(message, {
       httpStatusCode: 400,
       ...data,
     })
-
-    Object.defineProperty(this, 'name', {
-      value: this.constructor.name,
-    })
-
-    Error.captureStackTrace(this, this.constructor)
   }
 }

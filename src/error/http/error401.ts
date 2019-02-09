@@ -1,19 +1,13 @@
-import { HTTPError, HTTPErrorData } from '@src/error/http/httpError'
+import { HttpError, HttpErrorData } from '@naturalcycles/js-lib'
 
 /**
  * HTTP 401: Unauthorized
  */
-export class Error401 extends HTTPError {
-  constructor (message = 'Unauthorized', data?: HTTPErrorData) {
+export class Error401 extends HttpError {
+  constructor (message = 'Unauthorized', data?: Partial<HttpErrorData>) {
     super(message, {
       httpStatusCode: 401,
       ...data,
     })
-
-    Object.defineProperty(this, 'name', {
-      value: this.constructor.name,
-    })
-
-    Error.captureStackTrace(this, this.constructor)
   }
 }

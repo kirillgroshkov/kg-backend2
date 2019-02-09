@@ -1,19 +1,13 @@
-import { HTTPError, HTTPErrorData } from '@src/error/http/httpError'
+import { HttpError, HttpErrorData } from '@naturalcycles/js-lib'
 
 /**
  * HTTP 500: Internal Server Error (generic uncategorized error)
  */
-export class Error500 extends HTTPError {
-  constructor (message = 'Internal Server Error', data?: HTTPErrorData) {
+export class Error500 extends HttpError {
+  constructor (message = 'Internal Server Error', data?: Partial<HttpErrorData>) {
     super(message, {
       httpStatusCode: 500,
       ...data,
     })
-
-    Object.defineProperty(this, 'name', {
-      value: this.constructor.name,
-    })
-
-    Error.captureStackTrace(this, this.constructor)
   }
 }

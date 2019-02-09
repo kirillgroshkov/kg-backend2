@@ -1,19 +1,13 @@
-import { HTTPError, HTTPErrorData } from '@src/error/http/httpError'
+import { HttpError, HttpErrorData } from '@naturalcycles/js-lib'
 
 /**
  * HTTP 403: Forbidden
  */
-export class Error403 extends HTTPError {
-  constructor (message = 'Forbidden', data?: HTTPErrorData) {
+export class Error403 extends HttpError {
+  constructor (message = 'Forbidden', data?: Partial<HttpErrorData>) {
     super(message, {
       httpStatusCode: 403,
       ...data,
     })
-
-    Object.defineProperty(this, 'name', {
-      value: this.constructor.name,
-    })
-
-    Error.captureStackTrace(this, this.constructor)
   }
 }

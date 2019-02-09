@@ -40,7 +40,7 @@ export class SlackService {
     const { webhookUrl } = this.cfg
 
     if (!webhookUrl) {
-      log('SLACK:\n' + _msg.text)
+      log(_msg.text)
       return
     }
 

@@ -2,6 +2,7 @@ import { StringMap } from '@naturalcycles/js-lib'
 import { env } from '@src/env/env.service'
 import { errorHandler } from '@src/server/handlers/error.handler'
 import { notFoundHandler } from '@src/server/handlers/notFound.handler'
+import { sentryErrorHandler } from '@src/server/handlers/sentry.error.handler'
 import { sentryService } from '@src/services'
 import * as cookieParser from 'cookie-parser'
 import * as cors from 'cors'
@@ -62,7 +63,8 @@ export function createApp (resources: StringMap<Router> = {}): Application {
   // The error handler must be before any other error middleware
   // NO: Generic error handler chooses which errors to report to sentry
   // OR: another handler that will selectively report to Sentry and pass error further via next(err)
-  app.use(sentryService.getErrorHandler())
+  // app.use(sentryService.getErrorHandler())
+  app.use(sentryErrorHandler)
 
   // Generic error handler
   // It handles errors, returns proper status, does sentry.captureException()

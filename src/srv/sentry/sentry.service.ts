@@ -32,7 +32,7 @@ export class SentryService {
   /**
    * Returns "eventId"
    */
-  captureException (e: Error): string | undefined {
+  captureException (e: any): string | undefined {
     log.error(e)
     return this.sentry().captureException(e)
   }
