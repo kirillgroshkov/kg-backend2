@@ -1,4 +1,4 @@
-import { Error401 } from '@src/error/http/error401'
+import { Error401 } from '@naturalcycles/backend-lib'
 import { AccountBM } from '@src/metrics/account/account.model'
 import { accountDao } from '@src/services'
 

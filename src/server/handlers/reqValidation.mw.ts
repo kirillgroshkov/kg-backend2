@@ -1,5 +1,5 @@
+import { Error400 } from '@naturalcycles/backend-lib'
 import { joiValidationService } from '@naturalcycles/nodejs-lib'
-import { Error400 } from '@src/error/http/error400'
 import { ReqHandler } from '@src/server/server.model'
 import { AnySchema } from 'joi'
 
