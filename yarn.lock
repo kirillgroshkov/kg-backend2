@@ -426,9 +426,9 @@
     glob-to-regexp "^0.3.0"
 
 "@naturalcycles/backend-lib@^1.0.0":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@naturalcycles/backend-lib/-/backend-lib-1.1.1.tgz#4d271678d17003f9ad70178d48d78093ec253a59"
-  integrity sha512-k8TeWboyJqnNnO+Q5Cmmf9R5x8vnpZ38XovK9VJXWX2EkEubvlGtiWg44QzVIBGf3S4zXF7X7ixvQ6JvaTHaPA==
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@naturalcycles/backend-lib/-/backend-lib-1.1.2.tgz#f6acf307687734aca1e05bd85ed99b5534c0ba2a"
+  integrity sha512-NX8l1JG5Hjm9Q9vDWKhu3OG7bJTWkEBcu/YiZRwIaCsCVvL3jE8HdLXL8k+lY2OfEM7JMw6h1la9pIlW0P+gtA==
   dependencies:
     "@types/cookie-parser" "^1.4.1"
     "@types/cors" "^2.8.4"

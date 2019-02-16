@@ -1,4 +1,3 @@
-import { resourceTestService } from '@naturalcycles/backend-lib'
 import { di } from '@src/container'
 import { DatastoreService } from '@src/db/datastore/datastore.service'
 import { MOCK_ACCOUNT1_HEADERS, mockAccount1 } from '@src/metrics/account/account.mock'
@@ -7,6 +6,7 @@ import { mockMetricValueInput1 } from '@src/metrics/metricValue/metricValue.mock
 import { MetricValueInput } from '@src/metrics/metricValue/metricValue.model'
 import { metricValueResource } from '@src/metrics/metricValue/metricValue.resource'
 import { mockDBState1 } from '@src/test/mock/db.mock'
+import { resourceTestService } from '@src/test/resource.test.service'
 import { CREATED_UPDATED_MATCHERS } from '@src/test/test.util'
 
 beforeEach(async () => {

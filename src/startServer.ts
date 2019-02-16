@@ -20,7 +20,7 @@ import './typings/typings'
 //
 // 3. Further imports
 //
-import { container, di } from '@src/container'
+import { di } from '@src/container'
 import { registerServices } from '@src/registerServices'
 import { BootstrapSharedService, SlackSharedService } from '@naturalcycles/backend-lib'
 
@@ -28,9 +28,13 @@ import { BootstrapSharedService, SlackSharedService } from '@naturalcycles/backe
 // 4. Run bootstrap
 //
 registerServices()
-const bootstrapService = di(BootstrapSharedService)
 
-bootstrapService.startServer(bootstrapStarted).then(() => {
-  const slackService: SlackSharedService = container.resolve('slackService')
-  void slackService.send('kg-backend2 started', 'info')
-})
+di(BootstrapSharedService)
+  .startServer(bootstrapStarted)
+  .then(() => {
+    void di(SlackSharedService).send('kg-backend2 started', 'info')
+  })
+  .catch(err => {
+    console.error(err)
+    process.exit(1)
+  })
