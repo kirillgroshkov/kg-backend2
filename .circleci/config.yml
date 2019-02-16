@@ -1,44 +1,28 @@
 #
 # validate yml:
-# circleci config validate -c .circleci/config.yml
+# circleci config validate
 #
-
-version: 2
+version: 2.1
 
 #
-# Defaults
+# Orbs
 #
-defaults: &defaults
-  docker:
-    - image: naturalcycles/ci-node:latest
-  working_directory: ~/repo
-  environment:
-    CC_TEST_REPORTER_ID: 16d16f012b65f3ddc9161380fb236188a60a403f12c71d62719f9f9605851ba8
-
-restore_cache: &restore_cache
-  key: deps-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-v1-{{ checksum "yarn.lock" }}
-
-save_cache: &save_cache
-  paths:
-    - node_modules
-  key: deps-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-v1-{{ checksum "yarn.lock" }}
+orbs:
+  tools: naturalcycles/tools@volatile
+  # tools: naturalcycles/tools@dev:1
 
 #
 # Jobs
 #
 jobs:
-  build-job:
-    <<: *defaults
-    docker:
-      - image: naturalcycles/ci-node-gcloud:latest
+  build-deploy-job:
+    executor: tools/node-gcloud
     steps:
       - checkout
       - run: echo 'export GIT_MSG=`git log -1 --pretty=%B`' >> $BASH_ENV
 
       # Yarn
-      - restore_cache: *restore_cache
-      - run: yarn --pure-lockfile
-      - save_cache: *save_cache
+      - tools/install_yarn_deps
 
       # Deploy
       - run:
@@ -55,32 +39,6 @@ jobs:
           command: |
             curl --fail https://kg-backend2.appspot.com/ || exit 1
 
-  test-job:
-    <<: *defaults
-    steps:
-      - checkout
-
-      # Yarn
-      - restore_cache: *restore_cache
-      - run: yarn --pure-lockfile
-
-      # Test
-      - run:
-          name: Test
-          command: |
-            cc-test-reporter before-build
-            yarn test-ci
-            cc-test-reporter after-build -t lcov ./coverage/lcov.info
-
-      # Artifacts
-      - store_test_results:
-          path: report
-      - store_artifacts:
-          path: report
-      - store_artifacts:
-          path: coverage/lcov-report
-          destination: coverage
-
 #
 # Workflows
 #
@@ -89,8 +47,9 @@ workflows:
 
   build-workflow:
     jobs:
-      - build-job:
+      - build-deploy-job:
           filters:
             branches:
               only: master
-      - test-job
+      - tools/test-lib-job:
+          CC_TEST_REPORTER_ID: 16d16f012b65f3ddc9161380fb236188a60a403f12c71d62719f9f9605851ba8
