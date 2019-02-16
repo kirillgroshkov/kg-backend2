@@ -1,8 +1,7 @@
+import { SentrySharedServiceCfg, SlackSharedServiceCfg } from '@naturalcycles/backend-lib'
 import { secretStorageDir } from '@src/cnst/paths.cnst'
 import { BaseDatastoreDaoCfg } from '@src/db/datastore/base.datastore.dao'
 import { SecretServiceCfg } from '@src/secret/secret.service'
-import { SentryServiceCfg } from '@src/srv/sentry/sentry.service'
-import { SlackServiceCfg } from '@src/srv/slack.service'
 
 export class EnvProd {
   name = 'prod'
@@ -20,14 +19,14 @@ export class EnvProd {
 
   datastoreInMemory = false
 
-  sentryCfg: SentryServiceCfg = {
+  sentryCfg: SentrySharedServiceCfg = {
     environment: 'prod',
     dsn: 'https://9509d46b222c449ea669e6b8d2ab76ac@sentry.io/1380359',
   }
 
   authEnabled = true
 
-  slackCfg: SlackServiceCfg = {
+  slackCfg: SlackSharedServiceCfg = {
     webhookUrl: 'https://hooks.slack.com/services/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',
   }
 

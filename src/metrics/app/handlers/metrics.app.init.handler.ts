@@ -1,9 +1,9 @@
 import { metricsBRService } from '@src/metrics/metrics.br.service'
 import { MetricsBackendResponseBM } from '@src/metrics/metrics.model'
-import { ReqHandler } from '@src/server/server.model'
 import { metricValueDao } from '@src/services'
+import { RequestHandler } from 'express'
 
-export const metricsAppInitHanlder: ReqHandler = async (req, res) => {
+export const metricsAppInitHanlder: RequestHandler = async (req, res) => {
   const account = await req.rc.requireAccount()
 
   const metricIds = await metricValueDao.getAllMetricIdsByAccount(account.id)

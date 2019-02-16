@@ -1,4 +1,4 @@
-import { SlackServiceCfg } from '@src/srv/slack.service'
+import { SlackSharedServiceCfg } from '@naturalcycles/backend-lib'
 import { EnvProd } from './env.prod'
 
 export class EnvDev extends EnvProd {
@@ -14,7 +14,7 @@ export class EnvDev extends EnvProd {
 
   authEnabled = false
 
-  slackCfg: SlackServiceCfg = {
+  slackCfg: SlackSharedServiceCfg = {
     // webhookUrl: undefined
   }
 }

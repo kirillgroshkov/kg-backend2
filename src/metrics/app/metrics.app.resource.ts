@@ -1,7 +1,7 @@
 import { metricsAppInitHanlder } from '@src/metrics/app/handlers/metrics.app.init.handler'
-import { ReqRouter } from '@src/server/req.router'
+import { getRouter } from '@src/server/router'
 
-const router = new ReqRouter()
-export const metricsAppResource = router.resource
+const router = getRouter()
+export const metricsAppResource = router
 
 router.get('/init', metricsAppInitHanlder)

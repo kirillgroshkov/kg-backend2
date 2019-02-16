@@ -1,14 +1,14 @@
 import { objectUtil } from '@naturalcycles/js-lib'
 import { processSharedUtil } from '@naturalcycles/nodejs-lib'
-import { bootstrapService } from '@src/bootstrap.service'
 import { timeUtil } from '@src/datetime/time.util'
 import { env } from '@src/env/env.service'
-import { ReqRouter } from '@src/server/req.router'
+import { getRouter } from '@src/server/router'
 
-const router = new ReqRouter()
-export const rootResource = router.resource
+const router = getRouter()
+export const rootResource = router
 
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res) => {
+  const { bootstrapService } = require('@src/services') // avoid circular dep
   const { serverStarted } = bootstrapService
 
   res.json(

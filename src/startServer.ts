@@ -13,10 +13,12 @@ const bootstrapStarted = Date.now()
 //
 // 2. Imports
 //
-import { bootstrapService } from '@src/bootstrap.service'
-import '@src/polyfills'
+import { bootstrapService, slackService } from '@src/services'
+import './typings/typings'
 
 //
 // 3. Run bootstrap
 //
-void bootstrapService.startServer(bootstrapStarted)
+bootstrapService.startServer(bootstrapStarted).then(() => {
+  void slackService.send('kg-backend2 started', 'info')
+})

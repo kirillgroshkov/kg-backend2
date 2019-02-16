@@ -1,3 +1,4 @@
+import { reqValidationMiddleware } from '@naturalcycles/backend-lib'
 import { metricValueGetHandler } from '@src/metrics/metricValue/handlers/metricValue.get.handler'
 import { metricValuePutHandler } from '@src/metrics/metricValue/handlers/metricValue.put.handler'
 import {
@@ -5,11 +6,9 @@ import {
   metricValueInputSchema,
   tsMinMaxObjectSchema,
 } from '@src/metrics/metricValue/metricValue.model'
-import { reqValidationMiddleware } from '@src/server/handlers/reqValidation.mw'
-import { ReqRouter } from '@src/server/req.router'
+import { getRouter } from '@src/server/router'
 
-const router = new ReqRouter()
-export const metricValueResource = router.resource
+const router = getRouter()
 
 router.put('/', reqValidationMiddleware('body', metricValueInputSchema), metricValuePutHandler)
 
@@ -19,3 +18,5 @@ router.get(
   reqValidationMiddleware('query', tsMinMaxObjectSchema),
   metricValueGetHandler,
 )
+
+export const metricValueResource = router

@@ -1,10 +1,10 @@
 import { requestContextService } from '@src/server/requestContext.service'
-import { ReqHandler } from '@src/server/server.model'
+import { RequestHandler } from 'express'
 
 /**
  * Provides req.rc
  */
-export const rcHandler: ReqHandler = async (req, res, next) => {
+export const rcHandler: RequestHandler = async (req, res, next) => {
   req.rc = await requestContextService.fromRequest(req)
   next()
 }

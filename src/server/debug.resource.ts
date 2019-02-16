@@ -1,10 +1,10 @@
 import { env } from '@src/env/env.service'
 import { adminMiddleware } from '@src/server/admin/admin.mw'
 import { adminService } from '@src/server/admin/admin.service'
-import { ReqRouter } from '@src/server/req.router'
+import { getRouter } from '@src/server/router'
 
-const router = new ReqRouter()
-export const debugResource = router.resource
+const router = getRouter()
+export const debugResource = router
 
 router.get('/', adminMiddleware(), async (req, res) => {
   res.json({

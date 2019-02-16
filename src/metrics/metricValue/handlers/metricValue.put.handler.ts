@@ -1,9 +1,9 @@
 import { createdUpdatedFields } from '@src/db/model.util'
 import { MetricValueInput } from '@src/metrics/metricValue/metricValue.model'
-import { ReqHandler } from '@src/server/server.model'
 import { metricValueDao } from '@src/services'
+import { RequestHandler } from 'express'
 
-export const metricValuePutHandler: ReqHandler = async (req, res) => {
+export const metricValuePutHandler: RequestHandler = async (req, res) => {
   const input: MetricValueInput = req.body
   const acc = await req.rc.requireAccount()
 
