@@ -1,5 +1,7 @@
+import { BootstrapSharedService } from '@naturalcycles/backend-lib'
 import { objectUtil } from '@naturalcycles/js-lib'
 import { processSharedUtil } from '@naturalcycles/nodejs-lib'
+import { di } from '@src/container'
 import { timeUtil } from '@src/datetime/time.util'
 import { env } from '@src/env/env.service'
 import { getRouter } from '@src/server/router'
@@ -8,8 +10,7 @@ const router = getRouter()
 export const rootResource = router
 
 router.get('/', async (req, res) => {
-  const { bootstrapService } = require('@src/services') // avoid circular dep
-  const { serverStarted } = bootstrapService
+  const { serverStarted } = di(BootstrapSharedService)
 
   res.json(
     objectUtil.filterFalsyValues({

@@ -1,4 +1,6 @@
-export interface GCPCfg {
+export const gcpServiceAccount = 'gcpServiceAccount'
+
+export interface GCPServiceAccount {
   keyFilename: string
   project_id: string
   client_email: string

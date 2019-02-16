@@ -1,8 +1,9 @@
 import { Query } from '@google-cloud/datastore/query'
 import { StringMap } from '@naturalcycles/js-lib'
+import { INSTANCE_ALIAS } from '@src/container'
 import { BaseDBEntity, DaoOptions } from '@src/db/datastore/datastore.model'
 import { DatastoreService } from '@src/db/datastore/datastore.service'
-import { LogFunction } from '@src/log/log.model'
+import { SecretService } from '@src/secret/secret.service'
 
 // Kind > id > entity
 type DatastoreData = StringMap<StringMap<any>>
@@ -28,10 +29,16 @@ const FILTER_FNS: StringMap<FilterFn> = {
  * In-memory limited emulation of DatastoreService API.
  */
 export class DatastoreMemoryService extends DatastoreService {
-  constructor (log: LogFunction, public data: DatastoreData = {}) {
-    super({ project_id: 'Memory' } as any, log)
+  // static [INSTANCE_NAME] = 'datastoreService'
+  static [INSTANCE_ALIAS] = ['datastoreService', 'DatastoreService']
+
+  constructor (secretService: SecretService) {
+    // super({ project_id: 'Memory' } as any)
+    super(secretService)
     console.log('DatastoreMemoryService init')
   }
+
+  data: DatastoreData = {}
 
   /**
    * Resets InMemory DB data

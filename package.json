@@ -11,13 +11,14 @@
     "test-int": "TEST_MODE=integration yarn test"
   },
   "dependencies": {
-    "@google-cloud/datastore": "^3.0.1",
+    "@google-cloud/datastore": "~3.0.1",
     "@google-cloud/logging-winston": "^0.10.2",
     "@naturalcycles/backend-lib": "^1.0.0",
     "@naturalcycles/js-lib": "^2.0.2",
     "@naturalcycles/nodejs-lib": "^3.0.0",
     "@naturalcycles/promise-lib": "^2.0.0",
     "@sentry/node": "^4.5.3",
+    "awilix": "^4.2.0",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",

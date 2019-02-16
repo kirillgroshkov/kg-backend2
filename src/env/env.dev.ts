@@ -8,13 +8,13 @@ export class EnvDev extends EnvProd {
 
   swaggerStatsEnabled = false
 
-  sentryCfg = {
+  sentryServiceCfg = {
     // dsn: undefined,
   }
 
   authEnabled = false
 
-  slackCfg: SlackSharedServiceCfg = {
+  slackServiceCfg: SlackSharedServiceCfg = {
     // webhookUrl: undefined
   }
 }

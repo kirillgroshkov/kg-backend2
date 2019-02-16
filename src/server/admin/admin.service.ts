@@ -1,9 +1,11 @@
+import { FirebaseService } from '@src/firebase/firebase.service'
 import { RequestContext } from '@src/server/requestContext'
-import { firebaseService, log } from '@src/services'
 
 const ADMIN_SET = new Set<string>(['ceo@inventix.ru'])
 
-class AdminService {
+export class AdminService {
+  constructor (private firebaseService: FirebaseService) {}
+
   isEmailAdmin (email: string): boolean {
     return ADMIN_SET.has(email)
   }
@@ -12,12 +14,12 @@ class AdminService {
     if (!idToken) return undefined
 
     try {
-      const t = await firebaseService.verifyIdToken(idToken)
+      const t = await this.firebaseService.verifyIdToken(idToken)
       const email = t && t.email
-      log('admin: ' + email)
+      console.log('admin: ' + email)
       return email
     } catch (err) {
-      log('firebaseService.getEmailByToken error', (err || {}).message)
+      console.log('firebaseService.getEmailByToken error', (err || {}).message)
       return undefined
     }
   }
@@ -61,5 +63,3 @@ class AdminService {
     }
   }
 }
-
-export const adminService = new AdminService()

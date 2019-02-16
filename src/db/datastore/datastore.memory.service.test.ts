@@ -1,18 +1,20 @@
 import { deepFreeze } from '@naturalcycles/js-lib'
-import { log } from '@src/services'
+import { di } from '@src/container'
+import { DatastoreService } from '@src/db/datastore/datastore.service'
 import { securityService } from '@src/srv/security.service'
 import { mockTime } from '@src/test/mock/time.mock'
 import { DatastoreMemoryService } from './datastore.memory.service'
 
 const ID = 'randomDatastoreService1'
 const KIND = 'TestKind'
-const datastoreService = new DatastoreMemoryService(log)
+let datastoreService: DatastoreService
 
 beforeEach(() => {
   // mocks
   jest.restoreAllMocks()
   mockTime()
   securityService.generateStringId = jest.fn(() => ID)
+  datastoreService = di(DatastoreMemoryService)
   datastoreService.reset()
 })
 

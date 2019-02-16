@@ -1,16 +1,8 @@
-import { PromiseMap, StringMap } from '@naturalcycles/js-lib'
+import { memo, PromiseMap, StringMap } from '@naturalcycles/js-lib'
 import { pProps } from '@naturalcycles/promise-lib'
+import { di } from '@src/container'
 import { BaseDatastoreDao } from '@src/db/datastore/base.datastore.dao'
 import { MetricsBackendResponseBM, MetricsBackendResponseFM } from '@src/metrics/metrics.model'
-import { accountDao } from '@src/services'
-
-/**
- * All these properties of BackendResponseBM will be transformed BM>FM via these Daos.
- * Nothing else will be transformed automatically.
- */
-const BM_TO_FM_DAOS: StringMap<BaseDatastoreDao> = {
-  account: accountDao,
-}
 
 class MetricsBackendResponseService {
   async bmToFM (brBM: MetricsBackendResponseBM): Promise<MetricsBackendResponseFM> {
@@ -18,7 +10,7 @@ class MetricsBackendResponseService {
     // do bmToFM on each property
 
     const props: PromiseMap = {}
-    Object.entries(BM_TO_FM_DAOS).forEach(([prop, dao]) => {
+    Object.entries(this.getBMToFMDaos()).forEach(([prop, dao]) => {
       if (brBM[prop]) props[prop] = dao.bmToFM(brBM[prop])
     })
 
@@ -28,6 +20,17 @@ class MetricsBackendResponseService {
     }
 
     return brFM
+  }
+
+  /**
+   * All these properties of BackendResponseBM will be transformed BM>FM via these Daos.
+   * Nothing else will be transformed automatically.
+   */
+  @memo()
+  private getBMToFMDaos (): StringMap<BaseDatastoreDao> {
+    return {
+      account: di('accountDao'),
+    }
   }
 }
 

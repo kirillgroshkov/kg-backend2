@@ -1,24 +1,12 @@
 import { memo, objectUtil, StringMap } from '@naturalcycles/js-lib'
-import { log } from '@src/services'
+import { SecretServiceCfg } from '@src/secret/secret.model'
 import { securityService } from '@src/srv/security.service'
 import * as fs from 'fs-extra'
 require('dotenv').config() // ensure that .env was loaded before we try to access it
 
-export interface SecretServiceCfg {
-  /**
-   * Absolute path to json file with secrets.
-   */
-  secretFilePath: string
-
-  /**
-   * Name of the secret environment, e.g `prod`.
-   * Used to determine decryption key.
-   */
-  secretEnvName: string
-}
-
 export class SecretService {
-  constructor (public cfg: SecretServiceCfg) {}
+  // constructor (private dep: { secretServiceCfg: SecretServiceCfg }) {} // alternative way to do DI
+  constructor (private secretServiceCfg: SecretServiceCfg) {}
 
   /**
    * Initializes the service by loading, decrypting and preparing secrets.
@@ -29,7 +17,10 @@ export class SecretService {
   }
 
   getSecrets (): StringMap {
-    return this.loadSecretsFile(this.cfg.secretFilePath, this.cfg.secretEnvName)
+    return this.loadSecretsFile(
+      this.secretServiceCfg.secretFilePath,
+      this.secretServiceCfg.secretEnvName,
+    )
   }
 
   /**
@@ -43,7 +34,7 @@ export class SecretService {
     }
 
     const secretObj: StringMap = require(filePath)
-    log(`secrets file ${filePath} loaded`)
+    console.log(`secrets file ${filePath} loaded`)
 
     const decryptionKey = this.getRightDecryptionKey(secretObj, secretEnvName)
 
@@ -95,12 +86,12 @@ export class SecretService {
   }
 
   encryptString (str: string): string {
-    const encryptionKeyVar = `SECRETS_ENCRYPTION_KEY_${this.cfg.secretEnvName}`
+    const encryptionKeyVar = `SECRETS_ENCRYPTION_KEY_${this.secretServiceCfg.secretEnvName}`
     return securityService.encryptString(str, process.env[encryptionKeyVar]!)
   }
 
   decryptString (str: string): string {
-    const encryptionKeyVar = `SECRETS_ENCRYPTION_KEY_${this.cfg.secretEnvName}`
+    const encryptionKeyVar = `SECRETS_ENCRYPTION_KEY_${this.secretServiceCfg.secretEnvName}`
     return securityService.decryptString(str, process.env[encryptionKeyVar]!)
   }
 
@@ -111,7 +102,9 @@ export class SecretService {
   getSecret (secretName: string): string {
     const secret = this.getSecrets()[secretName]
     if (!secret) {
-      throw new Error(`Secret ${secretName} does not exist for ${this.cfg.secretEnvName}!`)
+      throw new Error(
+        `Secret ${secretName} does not exist for ${this.secretServiceCfg.secretEnvName}!`,
+      )
     }
     return secret
   }
@@ -119,4 +112,9 @@ export class SecretService {
   getSecretJson<T = any> (secretName: string): T {
     return JSON.parse(this.getSecret(secretName))
   }
+}
+
+// Convenience function
+export function getSecrets (secretService: SecretService): StringMap {
+  return secretService.getSecrets()
 }

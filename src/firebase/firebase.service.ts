@@ -1,24 +1,21 @@
 import { memo } from '@naturalcycles/js-lib'
-import { log } from '@src/services'
+import { firebaseServiceAccount } from '@src/firebase/firebase.service.model'
+import { SecretService } from '@src/secret/secret.service'
 import * as admin from 'firebase-admin'
 
-export interface FirebaseServiceCfg {
-  serviceAccount: admin.ServiceAccount
-}
-
 export class FirebaseService {
-  constructor (private cfg: FirebaseServiceCfg) {}
+  constructor (private secretService: SecretService) {}
 
   admin (): typeof admin {
-    return this.initAdmin(this.cfg)
+    return this.initAdmin(this.secretService.getSecretJson(firebaseServiceAccount))
   }
 
   @memo()
-  private initAdmin (cfg: FirebaseServiceCfg): typeof admin {
-    log('FirebaseService init...')
+  private initAdmin (firebaseServiceAccount: admin.ServiceAccount): typeof admin {
+    console.log('FirebaseService init...')
 
     admin.initializeApp({
-      credential: admin.credential.cert(cfg.serviceAccount),
+      credential: admin.credential.cert(firebaseServiceAccount),
     })
 
     return admin

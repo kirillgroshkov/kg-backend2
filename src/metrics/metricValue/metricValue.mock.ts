@@ -1,15 +1,13 @@
 import { MetricValueBM, MetricValueInput } from '@src/metrics/metricValue/metricValue.model'
-import { mockAccount1 } from '@src/test/mock/account.mock'
-import { mockMetric1, mockMetric1_2 } from '@src/test/mock/metric.mock'
 import { MOCK_TS } from '@src/test/mock/mock.cnst'
+import { mockAccount1 } from '../account/account.mock'
 
 export function mockMetricValue1 (): MetricValueBM {
   const acc = mockAccount1()
-  const metric = mockMetric1()
 
   return {
     accountId: acc.id,
-    metricId: metric.id,
+    metricId: 'metric1',
     created: MOCK_TS,
     updated: MOCK_TS,
     ts: MOCK_TS,
@@ -18,20 +16,16 @@ export function mockMetricValue1 (): MetricValueBM {
 }
 
 export function mockMetricValueInput1 (): MetricValueInput {
-  const metric = mockMetric1()
-
   return {
-    metricId: metric.id,
+    metricId: 'metric1',
     ts: MOCK_TS,
     v: 10,
   }
 }
 
 export function mockMetricValueInput1_2 (): MetricValueInput {
-  const metric = mockMetric1_2()
-
   return {
-    metricId: metric.id,
+    metricId: 'metric2',
     ts: MOCK_TS + 2,
     v: 11,
   }

@@ -1,7 +1,7 @@
 import { SentrySharedServiceCfg, SlackSharedServiceCfg } from '@naturalcycles/backend-lib'
 import { secretStorageDir } from '@src/cnst/paths.cnst'
-import { BaseDatastoreDaoCfg } from '@src/db/datastore/base.datastore.dao'
-import { SecretServiceCfg } from '@src/secret/secret.service'
+import { BaseDatastoreDaoCfg } from '@src/db/datastore/datastore.model'
+import { SecretServiceCfg } from '@src/secret/secret.model'
 
 export class EnvProd {
   name = 'prod'
@@ -12,25 +12,25 @@ export class EnvProd {
 
   swaggerStatsEnabled = true
 
-  secretCfg: SecretServiceCfg = {
+  secretServiceCfg: SecretServiceCfg = {
     secretEnvName: 'PROD',
     secretFilePath: secretStorageDir + '/secrets.prod.json',
   }
 
   datastoreInMemory = false
 
-  sentryCfg: SentrySharedServiceCfg = {
+  sentryServiceCfg: SentrySharedServiceCfg = {
     environment: 'prod',
     dsn: 'https://9509d46b222c449ea669e6b8d2ab76ac@sentry.io/1380359',
   }
 
   authEnabled = true
 
-  slackCfg: SlackSharedServiceCfg = {
+  slackServiceCfg: SlackSharedServiceCfg = {
     webhookUrl: 'https://hooks.slack.com/services/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',
   }
 
-  baseDaoCfg: BaseDatastoreDaoCfg = {
+  baseDatastoreDaoCfg: BaseDatastoreDaoCfg = {
     throwOnDaoCreateObject: true,
     throwOnEntityValidationError: true,
   }

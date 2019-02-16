@@ -1,6 +1,7 @@
 import { Error401 } from '@naturalcycles/backend-lib'
+import { di } from '@src/container'
+import { AccountDao } from '@src/metrics/account/account.dao'
 import { AccountBM } from '@src/metrics/account/account.model'
-import { accountDao } from '@src/services'
 
 /**
  * To be used in services instead of Express.Request.
@@ -15,6 +16,7 @@ export class RequestContext {
   private cachedAccount?: Promise<AccountBM | undefined>
 
   async getAccount (): Promise<AccountBM | undefined> {
+    const accountDao = di<AccountDao>('accountDao')
     return (this.cachedAccount = this.cachedAccount || accountDao.getByAccountKey(this.accountKey))
   }
 

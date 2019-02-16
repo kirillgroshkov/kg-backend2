@@ -1,12 +1,14 @@
 import { staticDir } from '@src/cnst/paths.cnst'
+import { di } from '@src/container'
 import { env } from '@src/env/env.service'
+import { AdminService } from '@src/server/admin/admin.service'
 import { requestContextService } from '@src/server/requestContext.service'
 import { RequestHandler } from 'express'
 import * as fs from 'fs-extra'
-import { adminService } from './admin.service'
 
 export function adminMiddleware (urlStartsWith?: string): RequestHandler {
   return async function adminMiddlewareFn (req, res, next): Promise<void> {
+    const adminService = di(AdminService)
     if (!env().authEnabled) return next()
 
     // if 'urlStartsWith' - only apply the mw to urls that start with that string

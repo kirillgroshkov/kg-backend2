@@ -1,23 +1,22 @@
 import { DatastoreKey } from '@google-cloud/datastore/entity'
 import { Query } from '@google-cloud/datastore/query'
+import { SentrySharedService } from '@naturalcycles/backend-lib'
 import { objectUtil } from '@naturalcycles/js-lib'
 import { joiValidationService } from '@naturalcycles/nodejs-lib'
 import { ModelType } from '@src/db/base.model'
-import { DaoOptions } from '@src/db/datastore/datastore.model'
+import { BaseDatastoreDaoCfg, DaoOptions } from '@src/db/datastore/datastore.model'
 import { DatastoreService } from '@src/db/datastore/datastore.service'
 import { createdUpdatedFields } from '@src/db/model.util'
-import { sentryService } from '@src/services'
 import { ObjectSchema } from 'joi'
 import { Observable } from 'rxjs'
 import { flatMap, map } from 'rxjs/operators'
 
-export interface BaseDatastoreDaoCfg {
-  throwOnEntityValidationError?: boolean
-  throwOnDaoCreateObject?: boolean
-}
-
 export abstract class BaseDatastoreDao<BM = any, DBM = BM, FM = BM> {
-  constructor (private datastoreService: DatastoreService, private cfg: BaseDatastoreDaoCfg) {}
+  constructor (
+    private datastoreService: DatastoreService,
+    private sentryService: SentrySharedService,
+    private baseDatastoreDaoCfg: BaseDatastoreDaoCfg,
+  ) {}
 
   abstract readonly KIND: string
   abstract excludeFromIndexes: string[] = []
@@ -171,7 +170,7 @@ export abstract class BaseDatastoreDao<BM = any, DBM = BM, FM = BM> {
     // If we care about validation and there's an error
     if (vr.error && !opt.skipValidation) {
       if (
-        (this.cfg.throwOnEntityValidationError && opt.throwOnError !== false) ||
+        (this.baseDatastoreDaoCfg.throwOnEntityValidationError && opt.throwOnError !== false) ||
         opt.throwOnError
       ) {
         if (!vr.error.message) console.log(vr.error)
@@ -179,7 +178,7 @@ export abstract class BaseDatastoreDao<BM = any, DBM = BM, FM = BM> {
       } else {
         // capture by Sentry and ignore the error
         // It will still *convert* the value and return.
-        sentryService.captureException(vr.error)
+        this.sentryService.captureException(vr.error)
       }
     }
 
@@ -188,7 +187,7 @@ export abstract class BaseDatastoreDao<BM = any, DBM = BM, FM = BM> {
 
   create (input: BM, opt: DaoOptions = {}): BM {
     if (opt.throwOnError === undefined) {
-      opt.throwOnError = this.cfg.throwOnDaoCreateObject
+      opt.throwOnError = this.baseDatastoreDaoCfg.throwOnDaoCreateObject
     }
 
     let bm = Object.assign({}, this.beforeCreate(input))

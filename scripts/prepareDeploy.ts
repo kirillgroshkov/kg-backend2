@@ -23,6 +23,7 @@ const FILES = [
   'src', // Sentry needs it, because sourcemaps point to source files (../src/...)
   '!src/test',
   '!src/**/*.test.*',
+  '!src/**/*.mock.*',
   '!src/**/__snapshots__',
   'static',
   'package.json',

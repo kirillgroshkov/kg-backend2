@@ -1,3 +1,8 @@
+export interface BaseDatastoreDaoCfg {
+  throwOnEntityValidationError?: boolean
+  throwOnDaoCreateObject?: boolean
+}
+
 export interface DatastoreStats {
   count: number
 }
