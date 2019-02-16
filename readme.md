@@ -13,9 +13,10 @@
 - Node.js
 - Typescript
 - Express
-- Firebase (Auth, Firestore)
+- Firebase (Auth)
 - Jest
 - Google App Engine
+- Datastore
 
 # Develop
 
